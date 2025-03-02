@@ -8,7 +8,25 @@ const client = new Client({
 
 
 const token = process.env.DISCORD_TOKEN;
+const webhookUrlConsole = process.env.WEB_HOOK_AVISO
 
+// WebHooks
+const data = {
+  content: "Bot iniciado..",
+  username: "Console",
+};
+
+fetch(webhookUrlConsole, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(data),
+})
+  .then((res) => res.json())
+  .then((json) => console.log("✅ Mensagem enviada:", json))
+  .catch((err) => console.error("❌ Erro ao enviar:", err));
+
+
+// Comandos do Bot Abaixo
 client.once('ready', () => {
     console.log(`Bot conectado como ${client.user.tag}`);
 });
@@ -85,6 +103,35 @@ client.on('messageCreate', message => {
         content: `O Chikitaverso e real <@${message.author.id}>, to te falando aqui a prova: `,
         files: [imagemLocal]
       });
+    }
+  });
+
+  //Comando de teste com webhooks
+  client.on("messageCreate", async (message) => {
+    if (message.author.bot) return; 
+  
+    if (message.content === "$teste") {
+      const data = {
+        content: "Teste deu True",
+        username: "Console",
+      };
+  
+      try {
+        const response = await fetch(webhookUrlConsole, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+  
+        if (response.ok) {
+          console.log('Mesagem enviada!')
+        } else {
+          console.log('Erro ao enviar a messagem')
+        }
+      } catch (error) {
+        console.error("Erro ao enviar webhook:", error);
+        message.reply("❌ Erro ao conectar ao webhook.");
+      }
     }
   });
 
