@@ -12,7 +12,7 @@ Este é um bot para o Discord criado utilizando a biblioteca `discord.js`, com f
 
 - **`$perfil`**: Exibe a foto de perfil do usuário que enviou o comando.
 
-- **`$sedeclara`**: O bot responde de forma aleatória com diferentes respostas do "Chikitalismo". Respostas podem variar de elogios a um "fora" engraçado, acompanhadas de imagens.
+- **`$teamo`**: O bot responde de forma aleatória com diferentes respostas do "Chikitalismo". Respostas podem variar de elogios a um "fora" engraçado, acompanhadas de imagens.
 
 - **`$bater`**: Envia uma imagem engraçada com a tentativa de "bater" em Chikita.
 

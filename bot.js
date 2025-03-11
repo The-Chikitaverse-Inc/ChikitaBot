@@ -59,13 +59,13 @@ client.on('messageCreate', message => {
 
   // Chikita da um fora de forma aleatoria
   client.on('messageCreate', message => {
-    if (message.content.toLowerCase() === '$sedeclara') {
+    if (message.content.toLowerCase() === '$teamo') {
        // Respostas do comando $ch teamo
        const respostas = [
         {  texto: "Eu tambem me amo! ♥️",imagem: 'img/chikitailove.jpg' },
         {  texto: "Todas dizem isso", imagem: 'img/chikitaomg.jpg' },
-        {  texto: "Ah mais um(a) querendo >:(", imagem: 'img/chikitaestoysaindo.jpg'},
-        {  texto: "Literalmente Você, 👇 Tarado(a)!", imagem: 'img/chikitatarados.jpg'}
+        {  texto: "Ah mais um(a) enxer o saco!", imagem: 'img/chikitaestoysaindo.jpg'},
+        {  texto: "Literalmente Você: 👇", imagem: 'img/chikitatarados.jpg'}
         
       ];
   
@@ -135,5 +135,7 @@ client.on('messageCreate', message => {
     }
   });
 
+
+  
 client.login(token);
 
