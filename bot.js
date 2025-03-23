@@ -1,19 +1,45 @@
 require('dotenv').config();
-const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
+const { Client, GatewayIntentBits, EmbedBuilder, SlashCommandBuilder, REST, Routes } = require('discord.js');
 
 const client = new Client({
-    intents: [GatewayIntentBits.Guilds] // Apenas necessário para Slash Commands
+    intents: [GatewayIntentBits.Guilds]
 });
 
-const webhookUrlConsole = process.env.WEB_HOOK_AVISO;
+//* Comandos Registrados
+const commands = [
+    new SlashCommandBuilder().setName('ping').setDescription('Responde com Pong!'),
+    new SlashCommandBuilder().setName('chikitalismo').setDescription('Receba uma palavra do Chikitalismo'),
+    new SlashCommandBuilder().setName('perfil').setDescription('Mostra sua foto de perfil'),
+    new SlashCommandBuilder().setName('teamo').setDescription('Chikita reage ao seu amor'),
+    new SlashCommandBuilder().setName('bater').setDescription('Tente bater no Chikita'),
+    new SlashCommandBuilder().setName('chikitaverso').setDescription('Provas do Chikitaverso'),
+    new SlashCommandBuilder().setName('help').setDescription('Comando Para ver toda a lista de Comandos')
+].map(command => command.toJSON());
 
+//* Registrar comandos na API do Discord
+const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
+
+(async () => {
+    try {
+        console.log('Registrando Slash Commands no Servidor...');
+        await rest.put(
+            Routes.applicationCommands(process.env.CLIENT_ID),
+            { body: commands }
+        );
+        console.log('✅ Slash Commands registrados!');
+    } catch (error) {
+        console.error('Erro ao registrar comandos:', error);
+    }
+})();
+
+//* Quando o bot for ligado
 client.once('ready', () => {
-    console.log(`Bot está online como ${client.user.tag}`);
+    console.log(`🤖 Bot está online como ${client.user.tag}`);
 });
 
-
+//* Comandos 
 client.on('interactionCreate', async interaction => {
-    if (!interaction.isCommand()) return;
+    if (!interaction.isChatInputCommand()) return;
 
     const { commandName } = interaction;
 
@@ -27,9 +53,26 @@ client.on('interactionCreate', async interaction => {
 
     if (commandName === 'perfil') {
         const embed = new EmbedBuilder()
-            .setTitle(`Fotinha de ${interaction.user.username} 🤭`)
-            .setImage(interaction.user.displayAvatarURL({ dynamic: true, size: 1024 }))
-            .setColor("Blue");
+            .setTitle(`Fotinha de <@${interaction.user.id}>`)
+            .setThumbnail(interaction.user.displayAvatarURL())
+            .setFields(
+                {
+                    name: 'Nome:', 
+                    value: `${interaction.user.username} 
+                            \n Apelido: ${interaction.member.nick} 
+                            \n Tag: ${interaction.user.tag}`,
+                    inline: true
+                },
+                {
+                    name: 'Info Serve:',
+                    value: `Esta no Servidor ${interaction.guild.name} com ${interaction.guild.memberCount} membros
+                     Entrou em ${interaction.member.joinedAt}. \n
+                     Seus cargos são ${interaction.roles.cache} \n
+                     `
+                }
+                
+            )
+            .setColor('Aqua');
 
         await interaction.reply({ embeds: [embed] });
     }
@@ -66,30 +109,25 @@ client.on('interactionCreate', async interaction => {
         });
     }
 
-    if (commandName === 'teste') {
-        const data = {
-            content: "Teste deu True",
-            username: "Console",
-        };
+    if (commandName === 'help') {
+        const embed = new EmbedBuilder()
+            .setTitle("Comandos de Chikita Bot:")
+            .setColor('Aqua')
+            .addFields(
+                { name: "/ping", value: "Responde com pong para verificar se bot está funcionando corretamente." },
+                { name: "/chikitalismo", value: "Tenta converter você ao Chikitalismo com uma simples frase." },
+                { name: "/perfil", value: "Mostra sobre o seu perfil." },
+                { name: "/teamo", value: "ChikitaBot te rejeita por estar querendo namorar um bot." },
+                { name: "/bater", value: "Faz uma ameaça por estar brincando com o que não deve." },
+                { name: "/chikitaverso", value: "Ela mostra uma prova de que o Chikitaverso é real." },
+                { name: "/help", value: "Mostra os comandos." }
+            )
+            .setFooter({ text: "Mensagem direta do The Chikitaverse Inc." });
 
-        try {
-            const response = await fetch(webhookUrlConsole, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data),
-            });
-
-            if (response.ok) {
-                console.log('Mensagem enviada!');
-                await interaction.reply("✅ Webhook enviado com sucesso!");
-            } else {
-                console.log('Erro ao enviar a mensagem');
-                await interaction.reply("❌ Erro ao conectar ao webhook.");
-            }
-        } catch (error) {
-            console.error("Erro ao enviar webhook:", error);
-            await interaction.reply("❌ Erro ao conectar ao webhook.");
-        }
+        await interaction.reply({
+            content: `Aqui estão os comandos, meu caro(a) <@${interaction.user.id}>:`,
+            embeds: [embed]
+        });
     }
 });
 
