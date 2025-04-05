@@ -112,7 +112,7 @@ client.on('interactionCreate', async interaction => {
     if (commandName === 'help') {
         const embed = new EmbedBuilder()
             .setTitle("Comandos de Chikita Bot:")
-            .setColor('Aqua')
+            .setColor('Blue')
             .addFields(
                 { name: "/ping", value: "Responde com pong para verificar se bot está funcionando corretamente." },
                 { name: "/chikitalismo", value: "Tenta converter você ao Chikitalismo com uma simples frase." },
