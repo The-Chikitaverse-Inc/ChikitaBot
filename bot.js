@@ -53,12 +53,11 @@ client.on('interactionCreate', async interaction => {
 
     if (commandName === 'perfil') {
         const embed = new EmbedBuilder()
-            .setTitle(`Fotinha de <@${interaction.user.id}>`)
             .setThumbnail(interaction.user.displayAvatarURL())
             .setFields(
                 {
                     name: 'Nome:', 
-                    value: `${interaction.user.username} 
+                    value: `${interaction.user.username}
                             \n Apelido: ${interaction.member.nick} 
                             \n Tag: ${interaction.user.tag}`,
                     inline: true
@@ -67,14 +66,19 @@ client.on('interactionCreate', async interaction => {
                     name: 'Info Serve:',
                     value: `Esta no Servidor ${interaction.guild.name} com ${interaction.guild.memberCount} membros
                      Entrou em ${interaction.member.joinedAt}. \n
-                     Seus cargos são ${interaction.roles.cache} \n
+                     Seus cargos são ${interaction.member.roles.cache
+                        .map(role => role.name.replace('@', ''))
+                        .join(', ')} \n
                      `
                 }
                 
             )
-            .setColor('Aqua');
+            .setColor('Blue');
 
-        await interaction.reply({ embeds: [embed] });
+        await interaction.reply({ 
+            content: `<@${interaction.user.id}>`,
+            embeds: [embed] 
+        });
     }
 
     if (commandName === 'teamo') {
