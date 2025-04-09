@@ -52,7 +52,7 @@ client.on('interactionCreate', async interaction => {
     }
 
     if (commandName === 'perfil') {
-        const embed = new EmbedBuilder()
+        const embed01 = new EmbedBuilder()
             .setThumbnail(interaction.user.displayAvatarURL())
             .setFields(
                 {
@@ -77,7 +77,7 @@ client.on('interactionCreate', async interaction => {
 
         await interaction.reply({ 
             content: `<@${interaction.user.id}>`,
-            embeds: [embed] 
+            embeds: [embed01] 
         });
     }
 
