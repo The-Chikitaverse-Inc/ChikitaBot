@@ -1,27 +1,74 @@
-# Bot do DC - ChikitaBot
+# 🤖 ChikitaBot
 
-Este é um bot para o Discord criado utilizando a biblioteca `discord.js`, com funcionalidades divertidas e interativas voltadas para o "Chikitalismo". O bot oferece diversos comandos que podem ser utilizados para interagir de maneira divertida com os membros de um servidor.
+Um bot do Discord divertido e personalizado com comandos engraçados, respostas com imagens e interações únicas — direto do **Chikitaverso**!
 
-## Funcionalidades
+## 🚀 Funcionalidades
 
-### Comandos disponíveis:
+O **ChikitaBot** possui uma variedade de comandos slash para interações cômicas, incluindo:
 
-- **`$ping`**: Responde com "Pong!" para testar se o bot está funcionando corretamente.
-  
-- **`$chikitalismo`**: Envia uma saudação personalizada para o autor da mensagem, perguntando se ele deseja uma palavra de Chikita.
+- `/ping` – Responde com "Pong!" para testar se o bot está online.
+- `/chikitalismo` – Te apresenta ao universo do Chikitalismo.
+- `/perfil` – Mostra informações do seu perfil no servidor com um embed personalizado.
+- `/teamo` – Recebe (ou não) amor do Chikita com imagens engraçadas.
+- `/bater` – Tenta bater no Chikita, mas... boa sorte.
+- `/chikitaverso` – Provas visuais do realismo do Chikitaverso.
+- `/help` – Mostra todos os comandos disponíveis.
 
-- **`$perfil`**: Exibe a foto de perfil do usuário que enviou o comando.
+## ⚙️ Instalação
 
-- **`$teamo`**: O bot responde de forma aleatória com diferentes respostas do "Chikitalismo". Respostas podem variar de elogios a um "fora" engraçado, acompanhadas de imagens.
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/...
+   cd chikitabot
+   ```
 
-- **`$bater`**: Envia uma imagem engraçada com a tentativa de "bater" em Chikita.
+2. Instale as dependências:
+   ```bash
+   npm install
+   ```
 
-- **`$chikitaverso`**: Envia uma imagem que serve como "prova" de que o Chikitaverso é real.
+3. Crie um arquivo `.env` com as variáveis:
+   ```env
+   DISCORD_TOKEN=seu_token_aqui
+   CLIENT_ID=seu_client_id_aqui
+   ```
 
-## Licença
+4. Certifique-se de ter uma pasta `img/` na raiz do projeto com as imagens:
+   ```
+   img/
+   ├─ chikitailove.jpg
+   ├─ chikitaomg.jpg
+   ├─ chikitaestoysaindo.jpg
+   ├─ chikitatarados.jpg
+   ├─ chikitatente.jpg
+   └─ chikitaverso.jpg
+   ```
 
-Este bot está disponível sob a Licença GNU General Public License (GPL). Veja o arquivo [LICENSE](./LICENSE) para mais detalhes.
+5. Inicie o bot:
+   ```bash
+   node bot.js
+   ```
+
+## 📜 Requisitos
+
+- Node.js v16.9.0 ou superior
+- Um bot cadastrado na [Discord Developer Portal](https://discord.com/developers/applications)
+- Permissões de `applications.commands` e `bot` com acesso a interações e mensagens
+
+## 📄 Licença
+
+Este projeto está licenciado sob os termos da **GNU General Public License v3.0**.
+
+Você pode:
+
+- Usar, estudar e modificar o código livremente.
+- Redistribuir sob os mesmos termos da GPLv3.
+- Contribuir com melhorias, mantendo a liberdade do software.
+
+Para mais detalhes, veja o arquivo [LICENSE](./LICENSE) ou acesse:  
+👉 https://www.gnu.org/licenses/gpl-3.0.html
 
 ---
 
-**Assinado:** dvcDaniel(eu) 
+**Enterprise:** The Chikitaverse Inc.
+**Assinado:** dvcDaniel
