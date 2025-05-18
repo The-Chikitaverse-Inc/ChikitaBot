@@ -17,13 +17,13 @@ const commands = [
 ].map(command => command.toJSON());
 
 //* Registrar comandos na API do Discord
-const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
+const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN2);
 
 (async () => {
     try {
         console.log('Registrando Slash Commands no Servidor...');
         await rest.put(
-            Routes.applicationCommands(process.env.CLIENT_ID),
+            Routes.applicationCommands(process.env.CLIENT_ID2),
             { body: commands }
         );
         console.log('✅ Slash Commands registrados!');
@@ -135,4 +135,4 @@ client.on('interactionCreate', async interaction => {
     }
 });
 
-client.login(process.env.DISCORD_TOKEN);
+client.login(process.env.DISCORD_TOKEN2);
