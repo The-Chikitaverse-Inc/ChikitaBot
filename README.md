@@ -91,7 +91,7 @@ Sinta-se à vontade para abrir issues ou pull requests com melhorias, sugestões
 
 ## 📜 Licença
 
-Distribuído sob a [GNU Plubic License](LICENSE).
+Distribuído sob a [GPL 2.0](LICENSE).
 
 ---
 
