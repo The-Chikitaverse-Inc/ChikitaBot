@@ -105,4 +105,6 @@ Veja também:
 
 ---
 
+**Incorporation:** The Chikitaverse Inc.
 
+**Assinado:** dvcDaniel
