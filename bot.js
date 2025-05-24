@@ -13,7 +13,49 @@ const commands = [
     new SlashCommandBuilder().setName('teamo').setDescription('Chikita reage ao seu amor'),
     new SlashCommandBuilder().setName('bater').setDescription('Tente bater no Chikita'),
     new SlashCommandBuilder().setName('chikitaverso').setDescription('Provas do Chikitaverso'),
-    new SlashCommandBuilder().setName('help').setDescription('Comando Para ver toda a lista de Comandos')
+    new SlashCommandBuilder().setName('help').setDescription('Comando Para ver toda a lista de Comandos'),
+    
+    new SlashCommandBuilder()
+  .setName('message')
+  .setDescription('Comando que manda uma mensagem de amor ou ódio para um usuário')
+  .addSubcommandGroup(group =>
+    group.setName('moderation')
+      .setDescription('Comandos de moderação')
+      .addSubcommand(sub =>
+        sub.setName('love')
+          .setDescription('Envie uma mensagem de amor para o usuário')
+          .addUserOption(option =>
+            option.setName('user')
+              .setDescription('Usuário para receber amor')
+              .setRequired(true)
+          )
+      )
+      .addSubcommand(sub =>
+        sub.setName('hatred')
+          .setDescription('Envie uma mensagem de ódio para o usuário')
+          .addUserOption(option =>
+            option.setName('user')
+              .setDescription('Usuário para receber ódio')
+              .setRequired(true)
+          )
+      )
+      .addSubcommand(sub =>
+        sub.setName('text')
+          .setDescription('Envie um texto customizado')
+          .addUserOption(option =>
+            option.setName('user')
+              .setDescription('Usuário que vai receber')
+              .setRequired(true)
+          )
+          .addStringOption(option =>
+            option.setName('mensagem')
+              .setDescription('Texto que você quer enviar')
+              .setRequired(true)
+          )
+      )
+  )
+
+
 ].map(command => command.toJSON());
 
 //* Registrar comandos na API do Discord
@@ -133,6 +175,28 @@ client.on('interactionCreate', async interaction => {
             embeds: [embed]
         });
     }
-});
+
+    if (commandName === 'message') {
+        const subcommandGroup = interaction.options.getSubcommandGroup();
+        const subcommand = interaction.options.getSubcommand();
+        const user = interaction.options.getUser('user');
+
+        if (subcommandGroup === 'moderation') {
+            if (subcommand === 'love') {
+                await interaction.reply(`♥️ <@${interaction.user.id}> Te Ama ${user}!`)
+            }
+
+            if (subcommand === 'hatred') {
+                await interaction.reply(`💢 <@${interaction.user.id}> Te odeia ${user}!`)
+            }
+
+            if (subcommand === 'text') {
+                const mensagem = interaction.options.getString('mensagem');
+                await interaction.reply(`📨 <@${interaction.user.id}> mandou para ${user} a mensagem: ${mensagem}`)
+            }
+        }
+    }
+
+})
 
 client.login(process.env.DISCORD_TOKEN2);
