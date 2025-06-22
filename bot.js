@@ -44,7 +44,7 @@ client.on('interactionCreate', async interaction => {
 client.on('ready', () => {
     //* Configura o intervalo para enviar a mensagem a cada 15 minutos
     const chanellID = '1311765282825441375'
-    const time = 15 * 60 * 1000
+    const time = 150 * 60 * 1000
 
     //* Envia a mensagem com botão a cada 15 minutos
     intervaloAchocolatado = setInterval(async () => {
