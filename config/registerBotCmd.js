@@ -1,6 +1,7 @@
 const { REST, Routes } = require('discord.js')
 const fs = require('fs')
 const path = require('path')
+require('dotenv').config()
 
 const registerCommands = async () => {
     const commands = []

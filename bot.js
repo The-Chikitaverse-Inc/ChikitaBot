@@ -1,5 +1,5 @@
 require('dotenv').config()
-const { Client, GatewayIntentBits, Collection } = require('discord.js')
+const { Client, GatewayIntentBits, Collection, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require('discord.js')
 const fs = require('fs')
 const path = require('path')
 const { registerCommands } = require('./config/registerBotCmd')
@@ -40,5 +40,50 @@ client.on('interactionCreate', async interaction => {
         await interaction.reply({ content: '❌ Erro ao executar comando', ephemeral: true })
     }
 })
+
+client.on('ready', () => {
+    //* Configura o intervalo para enviar a mensagem a cada X minutos
+    const chanellID = '1311765282825441375'
+    const time = 15 * 60 * 1000
+
+    //* Envia a mensagem com botão a cada X minutos
+    intervaloAchocolatado = setInterval(async () => {
+        try {
+            const canal = await client.channels.fetch(chanellID);
+            if (!canal) {
+                console.error('Canal não encontrado!');
+                return;
+            }
+
+            //* Cria o botão "Pegar achocolatado"
+            const botao = new ActionRowBuilder().addComponents(
+                new ButtonBuilder()
+                    .setCustomId('pegar_achocolatado')
+                    .setLabel('Pegar ☕')
+                    .setStyle(ButtonStyle.Primary)
+            );
+
+            //* Envia a mensagem automática com o botão
+            await canal.send({
+                content: 'Achocolatado pronto! Pegue o seu  <:chocomilk:1377028617954918571>  @here',
+                components: [botao]
+            });
+        } catch (error) {
+            console.error('Erro ao enviar mensagem automática:', error);
+        }
+    }, time);
+})
+
+client.on('interactionCreate', async (interaction) => {
+    if (!interaction.isButton()) return;
+
+    if (interaction.customId === 'pegar_achocolatado') {
+        // Responde apenas para quem clicou (resposta efêmera)
+        await interaction.reply({
+            content: `<@${interaction.user.id}> pegou o achocolatado! 🍫☕`,
+            ephemeral: true
+        });
+    }
+});
 
 client.login(process.env.DISCORD_TOKEN)
