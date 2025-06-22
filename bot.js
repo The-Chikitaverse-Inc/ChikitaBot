@@ -74,7 +74,7 @@ client.on('ready', () => {
     }, time);
 })
 
-client.on('interactionCreate', async (interaction) => {
+client.on('interactionCreate', async (interaction) => { 
     if (!interaction.isButton()) return;
 
     if (interaction.customId === 'pegar_achocolatado') {
