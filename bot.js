@@ -1,8 +1,9 @@
 require('dotenv').config()
-const { Client, GatewayIntentBits, Collection, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require('discord.js')
+const { Client, GatewayIntentBits, Collection, ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags} = require('discord.js')
 const fs = require('fs')
 const path = require('path')
 const { registerCommands } = require('./config/registerBotCmd')
+const { error } = require('console')
 
 const client = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers]
@@ -43,15 +44,15 @@ client.on('interactionCreate', async interaction => {
 
 client.on('ready', () => {
     //* Configura o intervalo para enviar a mensagem a cada 15 minutos
-    const chanellID = '1311765282825441375'
+    const chanellID = '1387864623197196448'
     const time = 150 * 60 * 1000
 
     //* Envia a mensagem com botão a cada 15 minutos
-    intervaloAchocolatado = setInterval(async () => {
+    const intervaloAchocolatado = setInterval(async () => {
         try {
             const canal = await client.channels.fetch(chanellID);
             if (!canal) {
-                console.error('Canal não encontrado!');
+                console.error('Canal não encontrado!')
                 return;
             }
 
@@ -69,21 +70,34 @@ client.on('ready', () => {
                 components: [botao]
             });
         } catch (error) {
-            console.error('Erro ao enviar mensagem automática:', error);
+            console.error('Erro ao enviar mensagem automática:', error)
         }
-    }, time);
+    }, time)
 })
 
+//* Resposta da messagem acima
 client.on('interactionCreate', async (interaction) => { 
     if (!interaction.isButton()) return;
 
     if (interaction.customId === 'pegar_achocolatado') {
-        // Responde apenas para quem clicou (resposta efêmera)
-        await interaction.reply({
-            content: `<@${interaction.user.id}> pegou o achocolatado! 🍫☕`,
-            ephemeral: true
-        });
+        try {
+            const originMessage = await interaction.channel.messages.fetch(interaction.message.id)
+            await originMessage.react('<:chocomilk:1387877957917348064>')
+
+            //* Enviea uma messagem so pra pessoa que clicou
+            await interaction.reply({
+                content: `<@${interaction.user.id}> pegou o achocolatado! 🍫☕`,
+                flags: MessageFlags.Ephemeral
+            })
+        } catch (err) {
+            console.error(`Erro ao enviar a messagem: ${err}`)
+                await interaction.reply({
+                    content: 'Erro ao nessa interação',
+                    flags: MessageFlags.Ephemeral
+                })
+        }
+
     }
-});
+})
 
 client.login(process.env.DISCORD_TOKEN)

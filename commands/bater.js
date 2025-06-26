@@ -8,7 +8,7 @@ module.exports = {
     const imagemLocal = 'img/chikitatente.jpg'
     await interaction.reply({
       content: `Tente <@${interaction.user.id}>, apenas tente..`,
-      files: [imagemLocal]
+      files: [imagemLocal],
     })
   }
 }
