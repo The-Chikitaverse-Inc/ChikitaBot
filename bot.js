@@ -42,21 +42,30 @@ client.on('interactionCreate', async interaction => {
     }
 })
 
-client.on('ready', () => {
-    //* Configura o intervalo para enviar a mensagem a cada 15 minutos
-    const chanellID = '1387864623197196448'
-    const time = 150 * 60 * 1000
+const idsChanell = {
+    test: '1345534530253226054',
+    prod: '1387864623197196448',
+}
 
-    //* Envia a mensagem com botão a cada 15 minutos
+const activeIntervals = new Map()
+
+client.on('ready', () => {
+    
+    const channelID = idsChanell.test
+    const time = 0.5 * 60 * 1000
+
+    if (activeIntervals.has(channelID)) {
+        clearInterval(activeIntervals.get(channelID))
+    }
+
     const intervaloAchocolatado = setInterval(async () => {
         try {
-            const canal = await client.channels.fetch(chanellID);
+            const canal = await client.channels.fetch(channelID);
             if (!canal) {
-                console.error('Canal não encontrado!')
+                console.error('Canal não encontrado!');
                 return;
             }
 
-            //* Cria o botão "Pegar achocolatado"
             const botao = new ActionRowBuilder().addComponents(
                 new ButtonBuilder()
                     .setCustomId('pegar_achocolatado')
@@ -64,40 +73,53 @@ client.on('ready', () => {
                     .setStyle(ButtonStyle.Primary)
             );
 
-            //* Envia a mensagem automática com o botão
             await canal.send({
-                content: 'Achocolatado pronto! Pegue o seu  <:chocomilk:1377028617954918571>  @here',
+                content: 'Achocolatado pronto! Pegue o seu <:chocomilk:1377028617954918571> @here',
                 components: [botao]
             });
         } catch (error) {
-            console.error('Erro ao enviar mensagem automática:', error)
+            console.error('Erro ao enviar mensagem automática:', error);
         }
-    }, time)
-})
+    }, time);
 
-//* Resposta da messagem acima
+    activeIntervals.set(channelID, intervaloAchocolatado);
+});
+
 client.on('interactionCreate', async (interaction) => { 
     if (!interaction.isButton()) return;
 
     if (interaction.customId === 'pegar_achocolatado') {
         try {
-            const originMessage = await interaction.channel.messages.fetch(interaction.message.id)
-            await originMessage.react('<:chocomilk:1387877957917348064>')
+            if (interaction.replied || interaction.deferred) {
+                await interaction.followUp({
+                    content: `<@${interaction.user.id}> já pegou seu achocolatado! 🍫☕`,
+                });
+                return;
+            }
 
-            //* Enviea uma messagem so pra pessoa que clicou
             await interaction.reply({
                 content: `<@${interaction.user.id}> pegou o achocolatado! 🍫☕`,
-                flags: MessageFlags.Ephemeral
-            })
-        } catch (err) {
-            console.error(`Erro ao enviar a messagem: ${err}`)
-                await interaction.reply({
-                    content: 'Erro ao nessa interação',
-                    flags: MessageFlags.Ephemeral
-                })
-        }
+            });
 
+        } catch (err) {
+            console.error('Erro ao processar interação:', err);
+            
+            // Se ainda não respondeu, envia mensagem de erro
+            if (!interaction.replied && !interaction.deferred) {
+                await interaction.reply({
+                    content: '❌ Erro ao processar seu pedido',
+                    flags: MessageFlags.Ephemeral
+                });
+            }
+        }
     }
-})
+});
+
+
+process.on('SIGINT', () => {
+    activeIntervals.forEach(interval => clearInterval(interval));
+    process.exit();
+});
+
 
 client.login(process.env.DISCORD_TOKEN)
