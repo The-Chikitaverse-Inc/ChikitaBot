@@ -51,8 +51,8 @@ const activeIntervals = new Map()
 
 client.on('ready', () => {
     
-    const channelID = idsChanell.test
-    const time = 0.5 * 60 * 1000
+    const channelID = idsChanell.prod
+    const time = 240 * 60 * 1000
 
     if (activeIntervals.has(channelID)) {
         clearInterval(activeIntervals.get(channelID))
@@ -113,7 +113,7 @@ client.on('interactionCreate', async (interaction) => {
             }
         }
     }
-});
+})
 
 
 process.on('SIGINT', () => {
