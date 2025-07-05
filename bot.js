@@ -4,9 +4,21 @@ const fs = require('fs')
 const path = require('path')
 const { registerCommands } = require('./config/registerBotCmd')
 const { error } = require('console')
+const express = require('express')
+
+const app = express()
+const PORT = 1995
+app.use(express.json())
 
 const client = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers]
+})
+
+app.get('/', (req, res) => {
+    res.json({
+        message: 'Bot successfully online',
+        code: 200
+    })
 })
 
 //* Coleção de comandos
@@ -83,7 +95,7 @@ client.on('ready', () => {
     }, time);
 
     activeIntervals.set(channelID, intervaloAchocolatado);
-});
+})
 
 client.on('interactionCreate', async (interaction) => { 
     if (!interaction.isButton()) return;
@@ -119,7 +131,9 @@ client.on('interactionCreate', async (interaction) => {
 process.on('SIGINT', () => {
     activeIntervals.forEach(interval => clearInterval(interval));
     process.exit();
-});
-
+})
 
 client.login(process.env.DISCORD_TOKEN)
+app.listen(PORT, () => {
+    console.log(`Bot em ${PORT}`)
+})
