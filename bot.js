@@ -64,7 +64,7 @@ const activeIntervals = new Map()
 client.on('ready', () => {
     
     const channelID = idsChanell.prod
-    const time = 240 * 60 * 1000
+    const time = 160 * 60 * 1000
 
     if (activeIntervals.has(channelID)) {
         clearInterval(activeIntervals.get(channelID))
