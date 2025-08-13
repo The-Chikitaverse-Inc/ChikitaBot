@@ -3,22 +3,9 @@ const { Client, GatewayIntentBits, Collection, ActionRowBuilder, ButtonBuilder, 
 const fs = require('fs')
 const path = require('path')
 const { registerCommands } = require('./config/registerBotCmd')
-const { error } = require('console')
-const express = require('express')
-
-const app = express()
-const PORT = 1995
-app.use(express.json())
 
 const client = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers]
-})
-
-app.get('/', (req, res) => {
-    res.json({
-        message: 'Bot successfully online',
-        code: 200
-    })
 })
 
 //* Coleção de comandos
@@ -134,6 +121,3 @@ process.on('SIGINT', () => {
 })
 
 client.login(process.env.DISCORD_TOKEN)
-app.listen(PORT, () => {
-    console.log(`Bot em ${PORT}`)
-})
